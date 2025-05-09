@@ -13,6 +13,14 @@ public class SecurityConfig {
         http
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+//              .mvcMatchers("/products/**").access("hasAuthority('SCOPE_products.read')")
+	              /**
+	               * Replaced by com.chj.gr.config.AnnotationSecurityConfig.java
+	                 @EnableGlobalMethodSecurity(
+							prePostEnabled = true	// enables @PreAuthorize and @PostAuathorize
+							, securedEnabled = true // enables @Secured
+							, jsr250Enabled = true	// enables @RolesAllowed (Ensure JSR-250 annotations are enabled)
+	               */
                 .anyRequest().authenticated()
                 .and()
                 .oauth2ResourceServer()
