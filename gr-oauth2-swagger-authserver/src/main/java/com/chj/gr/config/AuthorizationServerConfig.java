@@ -45,15 +45,37 @@ public class AuthorizationServerConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        /**
+         *  WORKS FINE.
+         */
 //        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedOrigins(Arrays.asList(
-        		"http://localhost:8081", 
-        		"http://localhost:8082",
-        		"http://localhost:8765" // gr-conf-swagger-aggregator
-        ));
+//        configuration.setAllowCredentials(false); // Nécessaire pour le motif "*"
+        /** */
+        /**
+         * WORKS FINE TOO.
+         */
+//        configuration.setAllowedOriginPatterns(Arrays.asList("[*]"));
+//        configuration.setAllowCredentials(false); // Nécessaire pour le motif "[*]"
+        /** */
+        /**
+         * WORKS FINE TOO.
+         */
+//        configuration.setAllowedOrigins(Arrays.asList(
+//        		"http://localhost:8081", 	// swagger Authorize : gr-oauth2-swagger-ms1
+//        		"http://localhost:8082",	// swagger Authorize : gr-oauth2-swagger-ms2
+//        		"http://localhost:8765" 	// swagger Authorize : gr-conf-swagger-aggregator
+//        ));
+//        configuration.setAllowCredentials(true);
+        /** */
+        /**
+         * WORKS FINE TOO.
+         */
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:*"));
+        configuration.setAllowCredentials(true); // Nécessaire pour le motif "http://localhost:*"
+        /** */
+        
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
