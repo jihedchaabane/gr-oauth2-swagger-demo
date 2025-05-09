@@ -30,7 +30,35 @@ import java.util.UUID;
 
 @Configuration
 public class AuthorizationServerConfig {
-
+    /**
+     * Securing OPTIONS /oauth2/token indique que le serveur reçoit une requête OPTIONS, qui est une requête CORS preflight envoyée
+     * par le navigateur (via Swagger UI) avant la requête POST.
+     * 
+     * Swagger UI, exécuté dans le navigateur (sur http://localhost:8081 ou http://localhost:8082), envoie une requête CORS vers http://localhost:8764/oauth2/token. 
+     * 
+     * Si le serveur d'autorisation ne retourne pas les en-têtes CORS appropriés (comme Access-Control-Allow-Origin), 
+     * 		le navigateur rejette la réponse, entraînant une erreur 403.
+     * 
+     * Spring Security ou le serveur d'autorisation peut ne pas gérer correctement les requêtes OPTIONS, qui sont nécessaires pour les requêtes CORS:
+     * 		donc, ci dessous la configuration correspondante.
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList(
+        		"http://localhost:8081", 
+        		"http://localhost:8082",
+        		"http://localhost:8765" // gr-conf-swagger-aggregator
+        ));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+    
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -96,33 +124,5 @@ public class AuthorizationServerConfig {
         return ProviderSettings.builder()
                 .issuer("http://localhost:8764")
                 .build();
-    }
-
-    /**
-     * Securing OPTIONS /oauth2/token indique que le serveur reçoit une requête OPTIONS, qui est une requête CORS preflight envoyée
-     * par le navigateur (via Swagger UI) avant la requête POST.
-     * 
-     * Swagger UI, exécuté dans le navigateur (sur http://localhost:8081 ou http://localhost:8082), envoie une requête CORS vers http://localhost:8764/oauth2/token. 
-     * 
-     * Si le serveur d'autorisation ne retourne pas les en-têtes CORS appropriés (comme Access-Control-Allow-Origin), 
-     * 		le navigateur rejette la réponse, entraînant une erreur 403.
-     * 
-     * Spring Security ou le serveur d'autorisation peut ne pas gérer correctement les requêtes OPTIONS, qui sont nécessaires pour les requêtes CORS:
-     * 		donc, ci dessous la configuration correspondante.
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
-        		"http://localhost:8081", 
-        		"http://localhost:8082",
-        		"http://localhost:8765" // gr-conf-swagger-aggregator
-        ));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 }

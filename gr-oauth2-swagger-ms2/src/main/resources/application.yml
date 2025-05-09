@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: ms1-swagger-service
+    name: ms2-swagger-service
   security:
     oauth2:
       resourceserver:
