@@ -1,5 +1,6 @@
 server:
   port: 8081
+
 spring:
   application:
     name: ms1-swagger-service
@@ -7,14 +8,43 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9000
+          issuer-uri: http://localhost:8764
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+    metadata-map:
+      # Indique que ce microservice doit être inclus dans le swagger de 'gr-conf-swagger-aggregator'' (désactiver le sinon sinon).
+      swagger.aggregator.enabled: true # ${aggregator.eureka.enabled}
+
 springdoc:
+  api-docs:
+    path: /v3/api-docs
   swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    try-it-out-enabled: true # Activer le mode "try it out" pour tous les endpoints
+    show-actuator: false # activer sinon pour voir les endpoints actuator dans le swagger.
     oauth:
       clientId: client1
-      clientSecret: secret
+      clientSecret: secret1
       usePkceWithAuthorizationCodeGrant: false
+
+app:
+  openapi:
+    local-url: http://localhost:${server.port}
+    dev-url: http://10.0.0.137:${server.port}
+    homol-url: http://10.0.0.500:${server.port}
+    prod-url: https://10.0.0.600:${server.port}
+## uri de gr-conf-swagger-aggregator
+swagger:
+  aggregator:
+    cors:
+      uri: http://localhost:8765 #${aggregator.cors.uri}
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG

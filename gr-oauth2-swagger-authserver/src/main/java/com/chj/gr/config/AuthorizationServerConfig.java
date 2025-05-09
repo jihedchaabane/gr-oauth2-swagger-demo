@@ -17,11 +17,15 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Configuration
@@ -32,6 +36,7 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.sendError(400, "Authentication error: " + authException.getMessage());
@@ -41,19 +46,25 @@ public class AuthorizationServerConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
-        RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
+        RegisteredClient registeredClient1 = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("client1")
-                .clientSecret("{noop}secret")
+                .clientSecret("{noop}secret1")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://localhost:8081/swagger-ui/oauth2-redirect.html")
-                .redirectUri("http://localhost:8082/swagger-ui/oauth2-redirect.html")
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .scope("read")
                 .scope("write")
                 .build();
+        
+        RegisteredClient registeredClient2 = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("client2")
+                .clientSecret("{noop}secret2")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .scope("update")
+                .scope("remove")
+                .build();
 
-        return new InMemoryRegisteredClientRepository(registeredClient);
+        return new InMemoryRegisteredClientRepository(registeredClient1, registeredClient2);
     }
 
     @Bean
@@ -83,7 +94,35 @@ public class AuthorizationServerConfig {
     @Bean
     public ProviderSettings providerSettings() {
         return ProviderSettings.builder()
-                .issuer("http://localhost:9000")
+                .issuer("http://localhost:8764")
                 .build();
+    }
+
+    /**
+     * Securing OPTIONS /oauth2/token indique que le serveur reçoit une requête OPTIONS, qui est une requête CORS preflight envoyée
+     * par le navigateur (via Swagger UI) avant la requête POST.
+     * 
+     * Swagger UI, exécuté dans le navigateur (sur http://localhost:8081 ou http://localhost:8082), envoie une requête CORS vers http://localhost:8764/oauth2/token. 
+     * 
+     * Si le serveur d'autorisation ne retourne pas les en-têtes CORS appropriés (comme Access-Control-Allow-Origin), 
+     * 		le navigateur rejette la réponse, entraînant une erreur 403.
+     * 
+     * Spring Security ou le serveur d'autorisation peut ne pas gérer correctement les requêtes OPTIONS, qui sont nécessaires pour les requêtes CORS:
+     * 		donc, ci dessous la configuration correspondante.
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(
+        		"http://localhost:8081", 
+        		"http://localhost:8082",
+        		"http://localhost:8765" // gr-conf-swagger-aggregator
+        ));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

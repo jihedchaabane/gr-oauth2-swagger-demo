@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 8764
 spring:
   application:
     name: authorization-server
@@ -11,3 +11,4 @@ logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
+    org.springframework.web.cors: DEBUG
