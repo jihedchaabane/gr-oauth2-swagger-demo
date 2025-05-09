@@ -59,9 +59,13 @@ public class SwaggerConfig {
 
 		License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
 
-		Info info = new Info().title("Swagger Management API").version("0.0.1-SNAPSHOT").contact(contact)
+		Info info = new Info()
+				.title("Swagger Management API")
+				.version("0.0.1-SNAPSHOT")
+				.contact(contact)
 				.description("This API exposes endpoints to manage " + artifact.toUpperCase() + ".")
-				.termsOfService("https://www.jihed.com").license(mitLicense);
+				.termsOfService("https://www.jihed.com")
+				.license(mitLicense);
 
         return new OpenAPI()
         		.info(info)

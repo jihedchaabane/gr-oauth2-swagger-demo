@@ -32,10 +32,9 @@ public class SwaggerConfig {
 
 	@Value("${spring.application.name}")
 	private String artifact;
-
+	
     @Bean
     public OpenAPI customOpenAPI() {
-    	
     	Server localServer = new Server();
 		localServer.setUrl(localUrl);
 		localServer.setDescription("Server URL in Local environment");
@@ -59,8 +58,7 @@ public class SwaggerConfig {
 
 		License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
 
-		Info info = new Info()
-				.title("Swagger Management API")
+		Info info = new Info().title("Swagger Management API")
 				.version("0.0.1-SNAPSHOT")
 				.contact(contact)
 				.description("This API exposes endpoints to manage " + artifact.toUpperCase() + ".")
@@ -78,7 +76,10 @@ public class SwaggerConfig {
                                                 .tokenUrl("http://localhost:8764/oauth2/token")
                                                 .scopes(new io.swagger.v3.oas.models.security.Scopes()
                                                         .addString("read", "read scope")
-                                                        .addString("write", "write scope"))))))
+                                                        .addString("write", "write scope")
+                                                        .addString("update", "update scope")
+                                                        .addString("remove", "remove scope")
+                                                		)))))
                 .addSecurityItem(new io.swagger.v3.oas.models.security.SecurityRequirement().addList("oauth2"));
     }
 }
