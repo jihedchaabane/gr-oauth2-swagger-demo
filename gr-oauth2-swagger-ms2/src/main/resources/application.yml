@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: ms2-swagger-service
+    name: gr-oauth2-swagger-ms2
   security:
     oauth2:
       resourceserver:
@@ -31,6 +31,8 @@ springdoc:
       clientId: client2
       clientSecret: secret2
       usePkceWithAuthorizationCodeGrant: false
+    extraScripts:
+      - /static/custom-swagger.js
 
 app:
   openapi:
