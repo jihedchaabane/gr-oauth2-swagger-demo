@@ -14,6 +14,11 @@
   </parent>
   
     <dependencies>
+		<dependency>
+			<groupId>com.chj.gr</groupId>
+			<artifactId>gr-common-configs</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+    	</dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -23,15 +28,20 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.9</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-		
+		<!--CONFIG SERVER CLIENT-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<!--
+		https://stackoverflow.com/questions/67507452/no-spring-config-import-property-has-been-defined -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
 		
         <dependency>
             <groupId>org.springframework.boot</groupId>
