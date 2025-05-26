@@ -84,7 +84,6 @@
 	</build>
 	
 	<modules>
-		<module>gr-oauth2-swagger-authserver</module>
 		<module>gr-oauth2-swagger-ms1</module>
 		<module>gr-oauth2-swagger-ms2</module>
 	</modules>
