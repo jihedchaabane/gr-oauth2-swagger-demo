@@ -97,8 +97,8 @@ public class AuthorizationServerConfig {
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient registeredClient1 = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client1")
-                .clientSecret("{noop}secret1")
+                .clientId("gr-oauth2-swagger-ms1")
+                .clientSecret("{noop}swagger-ms1")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .scope("read")
@@ -106,8 +106,8 @@ public class AuthorizationServerConfig {
                 .build();
         
         RegisteredClient registeredClient2 = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client2")
-                .clientSecret("{noop}secret2")
+                .clientId("gr-oauth2-swagger-ms2")
+                .clientSecret("{noop}swagger-ms2")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .scope("update")
