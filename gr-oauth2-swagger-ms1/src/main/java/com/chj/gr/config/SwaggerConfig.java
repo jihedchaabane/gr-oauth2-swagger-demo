@@ -64,7 +64,7 @@ public class SwaggerConfig {
 				.version("0.0.1-SNAPSHOT")
 				.contact(contact)
 				.description("This API exposes endpoints to manage " + artifact.toUpperCase() + ".")
-				.termsOfService("https://www.jihed.com")
+				.termsOfService("http://localhost:8081/swagger-ui/index.html")
 				.license(mitLicense);
 
         return new OpenAPI()
