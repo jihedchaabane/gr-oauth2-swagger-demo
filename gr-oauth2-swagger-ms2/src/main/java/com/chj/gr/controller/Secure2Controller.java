@@ -9,34 +9,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/secure")
-public class SecureController {
+@RequestMapping("/gr-oauth2-swagger-ms2/protected")
+public class Secure2Controller {
 
     @Operation(summary = "UPDATE secured data", security = @SecurityRequirement(name = "oauth2"))
-    @GetMapping("/ms2/update")
+    @GetMapping("/update")
     @PreAuthorize("hasAuthority('SCOPE_update')")
     public String update() {
-        return "SECURED data UPDATE from MS2";
+        return "SECURED data UPDATE from GR-OAUTH2-SWAGGER-MS2";
     }
 
     @Operation(summary = "REMOVE secured data", security = @SecurityRequirement(name = "oauth2"))
-    @GetMapping("/ms2/remove")
+    @GetMapping("/remove")
     @PreAuthorize("hasAuthority('SCOPE_remove')")
     public String remove() {
-        return "SECURED data REMOVE from MS2";
+        return "SECURED data REMOVE from GR-OAUTH2-SWAGGER-MS2";
     }
 
     @Operation(summary = "SOME_SCOPE secured data", security = @SecurityRequirement(name = "oauth2"))
-    @GetMapping("/ms2/somescope")
+    @GetMapping("/somescope")
     @PreAuthorize("hasAuthority('SCOPE_somescope')")
     public String somescope() {
-        return "SECURED data SOME_SCOPE from MS2";
-    }
-    
-    @Operation(summary = "NO_SCOPE secured data", security = @SecurityRequirement(name = "oauth2"))
-    @GetMapping("/ms2/noscope")
-//    @PreAuthorize("hasAuthority('SCOPE_noscope')")
-    public String noscope() {
-        return "SECURED data NO_SCOPE from MS2";
+        return "SECURED data SOME_SCOPE from GR-OAUTH2-SWAGGER-MS2";
     }
 }

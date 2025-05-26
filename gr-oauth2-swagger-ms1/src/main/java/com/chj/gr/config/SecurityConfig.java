@@ -12,8 +12,11 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-//              .mvcMatchers("/products/**").access("hasAuthority('SCOPE_products.read')")
+                
+                .antMatchers("/gr-oauth2-swagger-ms1/public/**").permitAll()
+//              .mvcMatchers("/gr-oauth2-swagger-ms1/protected/**").access("hasAuthority('SCOPE_read')")
 	              /**
 	               * Replaced by com.chj.gr.config.AnnotationSecurityConfig.java
 	                 @EnableGlobalMethodSecurity(

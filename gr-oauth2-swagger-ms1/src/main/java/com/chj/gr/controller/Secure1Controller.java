@@ -9,34 +9,27 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
-@RequestMapping("/api/secure")
-public class SecureController {
+@RequestMapping("/gr-oauth2-swagger-ms1/protected")
+public class Secure1Controller {
 
     @Operation(summary = "READ secured data", security = @SecurityRequirement(name = "oauth2"))
-    @GetMapping("/ms1/read")
+    @GetMapping("/read")
     @PreAuthorize("hasAuthority('SCOPE_read')")
     public String read() {
-        return "SECURED data READ from MS1";
+        return "SECURED data READ from GR-OAUTH2-SWAGGER-MS1";
     }
 
     @Operation(summary = "WRITE secured data", security = @SecurityRequirement(name = "oauth2"))
-    @GetMapping("/ms1/write")
+    @GetMapping("/write")
     @PreAuthorize("hasAuthority('SCOPE_write')")
     public String write() {
-        return "SECURED data WRITE from MS1";
+        return "SECURED data WRITE from GR-OAUTH2-SWAGGER-MS1";
     }
 
     @Operation(summary = "SOME_SCOPE secured data", security = @SecurityRequirement(name = "oauth2"))
-    @GetMapping("/ms1/somescope")
+    @GetMapping("/somescope")
     @PreAuthorize("hasAuthority('SCOPE_somescope')")
     public String somescope() {
-        return "SECURED data SOME_SCOPE from MS1";
-    }
-    
-    @Operation(summary = "NO_SCOPE secured data", security = @SecurityRequirement(name = "oauth2"))
-    @GetMapping("/ms1/noscope")
-//    @PreAuthorize("hasAuthority('SCOPE_noscope')")
-    public String noscope() {
-        return "SECURED data NO_SCOPE from MS1";
+        return "SECURED data SOME_SCOPE from GR-OAUTH2-SWAGGER-MS1";
     }
 }
