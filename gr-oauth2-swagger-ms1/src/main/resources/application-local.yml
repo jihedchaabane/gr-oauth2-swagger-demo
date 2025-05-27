@@ -1,4 +1,6 @@
 aggregator.eureka.enabled: true
+params.restTemplateConfiguration.enabled: false
+swagger-params.enabled: true
 
 swagger-params:
   issuerUri: ${params.oauth2.issuerUri}
@@ -39,18 +41,10 @@ params:
     password: jihed1234
 ###################################################################
 springdoc:
-  api-docs:
-    path: /v3/api-docs
   swagger-ui:
-    path: /swagger-ui.html
-    operations-sorter: method
-    tags-sorter: alpha
-    # Activer le mode "try it out" pour tous les endpoints
-    try-it-out-enabled: true
     oauth:
       clientId: gr-oauth2-swagger-ms1
       clientSecret: swagger-ms1
-  show-actuator: false # activer sinon pour voir les endpoints actuator dans le swagger.
 ###################################################################
 caller:
   destination:
