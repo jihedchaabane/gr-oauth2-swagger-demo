@@ -26,7 +26,7 @@ params:
   oauth2:
     issuerUri: http://localhost:8764
   gatewayOauth2:
-    uri: http://GR-API-GATEWAY
+    uri: http://SPRINGBOOT-CONF-GATEWAY-API-OAUTH2
   swaggerAggregator:
     uri: http://localhost:8765
   zipkin:
