@@ -1,0 +1,15 @@
+server.port: 8082
+
+spring:
+  application:
+    name: gr-oauth2-swagger-ms2
+  # Connect to the config server to get the properties
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_ADDR:http://localhost:8762}
+      #uri: ${CONFIG_SERVER_ADDR:http://localhost:8443}
+  
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG

@@ -73,9 +73,9 @@ pipeline {
                         stage("Build New Docker Image: ${module}") {
                             script {
                                 //def version = sh(script: "mvn -pl ${module} help:evaluate -Dexpression=project.version -q -DforceStdout", returnStdout: true).trim()
-                                //def port = sh(script: "yq eval '.server.port' ${module}/src/main/resources/application.yml", returnStdout: true).trim()
+                                //def port = sh(script: "yq eval '.server.port' ${module}/src/main/resources/bootstrap.yml", returnStdout: true).trim()
                                 def version = sh(script: "grep 'build.version' 	${module}/target/classes/META-INF/build-info.properties | cut -d'=' -f2", returnStdout: true).trim()
-                                def port = sh(script: "grep 'server.port:' ${module}/src/main/resources/application.yml | cut -d' ' -f2", returnStdout: true).trim()
+                                def port = sh(script: "grep 'server.port:' ${module}/src/main/resources/bootstrap.yml | cut -d' ' -f2", returnStdout: true).trim()
                                 def jarFile = sh(script: "ls ${module}/target/*.jar", returnStdout: true).trim()
                                 sh """
                                     docker build \
@@ -101,9 +101,9 @@ pipeline {
                         stage("Run New Docker Container: container-${module}") {
                             script {
                                 //def version = sh(script: "mvn -pl ${module} help:evaluate -Dexpression=project.version -q -DforceStdout", returnStdout: true).trim()
-                                //def port = sh(script: "yq eval '.server.port' ${module}/src/main/resources/application.yml", returnStdout: true).trim()
+                                //def port = sh(script: "yq eval '.server.port' ${module}/src/main/resources/bootstrap.yml", returnStdout: true).trim()
                                 def version = sh(script: "grep 'build.version' 	${module}/target/classes/META-INF/build-info.properties | cut -d'=' -f2", returnStdout: true).trim()
-                                def port = sh(script: "grep 'server.port:' ${module}/src/main/resources/application.yml | cut -d' ' -f2", returnStdout: true).trim()
+                                def port = sh(script: "grep 'server.port:' ${module}/src/main/resources/bootstrap.yml | cut -d' ' -f2", returnStdout: true).trim()
                                 sh """
 				                    docker run \
 				                    	-d --name container-${module} --network ${DOCKER_NETWORK} \
