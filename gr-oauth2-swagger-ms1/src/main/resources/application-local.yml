@@ -28,7 +28,7 @@ params:
   gatewayOauth2:
     uri: http://SPRINGBOOT-CONF-GATEWAY-API-OAUTH2
   swaggerAggregator:
-    uri: http://localhost:8765
+    uri: http://localhost:8766
   zipkin:
     uri: http://localhost:9411
   keystore:
